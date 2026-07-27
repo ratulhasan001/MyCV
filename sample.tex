@@ -1,0 +1,458 @@
+\documentclass[10pt, a4paper]{article}
+
+% Packages:
+\usepackage[
+ignoreheadfoot, % set margins without considering header and footer
+top=0.5 cm, % seperation between body and page edge from the top
+bottom=0.5 cm, % seperation between body and page edge from the bottom
+left=0.5 cm, % seperation between body and page edge from the left
+right=0.5 cm, % seperation between body and page edge from the right
+footskip=0.5 cm, % seperation between body and footer
+% showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[T1]{fontenc}
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+pdftitle={Ratul Hasan's CV},
+pdfauthor={Ratul Hasan},
+pdfcreator={LaTeX with RenderCV},
+colorlinks=true,
+urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+\input{glyphtounicode}
+\pdfgentounicode=1
+% \usepackage[T1]{fontenc} % this breaks sb2nov
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\fi
+
+
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+
+\makeatother
+
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+
+\titlespacing{\section}{
+	% left space:
+	-1pt
+}{
+	% top space:
+	0.3 cm
+}{
+	% bottom space:
+	0.2 cm
+} % section title spacing
+
+% Custom formatting for \subsection, to keep it visually consistent
+% with the \section style used throughout the rest of the document
+% (previously subsections fell back to LaTeX's default styling).
+\titleformat{\subsection}{\bfseries\normalsize}{}{0pt}{}
+\titlespacing{\subsection}{-1pt}{0.2 cm}{0.1 cm}
+
+\renewcommand\labelitemi{$\circ$} % custom bullet points
+\newenvironment{highlights}{
+	\begin{itemize}[
+		topsep=0.10 cm,
+		parsep=0.10 cm,
+		partopsep=0pt,
+		itemsep=0pt,
+		leftmargin=0.4 cm + 10pt
+		]
+	}{
+	\end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+	\begin{itemize}[
+		topsep=0.10 cm,
+		parsep=0.10 cm,
+		partopsep=0pt,
+		itemsep=0pt,
+		leftmargin=10pt
+		]
+	}{
+	\end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+	\begin{adjustwidth}{
+			0.2 cm + 0.00001 cm
+		}{
+			0.2 cm + 0.00001 cm
+		}
+	}{
+	\end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+	\onecolentry
+	\def\secondColumn{#2}
+	\setcolumnwidth{\fill, 4.5 cm}
+	\begin{paracol}{2}
+	}{
+		\switchcolumn \raggedleft \secondColumn
+	\end{paracol}
+	\endonecolentry
+} % new environment for two column entries
+
+\newenvironment{header}{
+	\setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+	\par\kern\topsep
+} % new environment for the header
+
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+	\AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+		\put(
+		\LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
+		\LenToUnit{\paperheight-1.0 cm}
+		){\vtop{{\null}\makebox[0pt][c]{
+					\small\color{gray}\textit{}\hspace{\widthof{}}
+		}}}%
+	}%
+}%
+
+% save the original href command in a new command:
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+
+\begin{document}
+	\newcommand{\AND}{\unskip
+		\cleaders\copy\ANDbox\hskip\wd\ANDbox
+		\ignorespaces
+	}
+	\newsavebox\ANDbox
+	\sbox\ANDbox{}
+	
+	\placelastupdatedtext
+	\begin{header}
+		\textbf{\fontsize{24 pt}{24 pt}\selectfont Ratul Hasan}
+		
+		\vspace{0.3 cm}
+		
+		\normalsize
+		\mbox{\hrefWithoutArrow{mailto:ratulhasan.cs@gmail.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}ratulhasan.cs@gmail.com}}%
+		\kern 0.25 cm%
+		\AND%
+		\kern 0.25 cm%
+		\mbox{\hrefWithoutArrow{tel:+8801760972108}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+8801760972108}}%
+		\kern 0.25 cm%
+		\AND%
+		\kern 0.25 cm%
+		\mbox{\hrefWithoutArrow{https://ratulhasan.xyz/}{\color{black}{\footnotesize\faLink}\hspace*{0.13cm}ratulhasan.xyz}}%
+		\kern 0.25 cm%
+		\AND%
+		\kern 0.25 cm%
+		\mbox{\hrefWithoutArrow{https://linkedin.com/in/ratul-hasan-linked-in}{\color{black}{\footnotesize\faLinkedinIn}\hspace*{0.13cm}ratul-hasan-linked-in}}%
+		\kern 0.25 cm%
+		\AND%
+		\kern 0.25 cm%
+		\mbox{\hrefWithoutArrow{https://github.com/ratulhasan001}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}ratulhasan001}}%
+	\end{header}
+	
+	\vspace{0.3 cm - 0.3 cm}
+	
+	
+	
+	
+	\section{Professional Summary}
+	
+	\begin{onecolentry}
+		Computer Science graduate with research experience in machine learning, healthcare AI, blockchain, and cybersecurity. Published in peer-reviewed conference proceedings, with research interests in trustworthy AI, large language models, and AI for healthcare. Aspiring to pursue graduate research in Artificial Intelligence.
+	\end{onecolentry}
+	
+	
+	
+	\section{EXPERIENCE}
+	
+	\begin{twocolentry}{
+			\textit{Queens, NY, USA\\May 2026 - Present}}
+		\textbf{ELITE Research Lab LLC} | \textit{\textbf{Research Intern (Remote)}}
+		\begin{highlights}
+			\item Working on LLM regarding its bias, hallucination
+			\item Ongoing journal on LLM's performance in mental health and depression  
+		\end{highlights}
+	\end{twocolentry}
+	\vspace{0.2 cm}
+	
+	\vspace{0.2 cm}
+	
+
+\begin{twocolentry}{
+		\textit{Natore, Bangladesh\\January 2025 - May 2026}}
+	\textbf{BAUET Computer Society, Department of CSE, BAUET} | \textit{\textbf{Programming Instructor}}
+	\begin{highlights}
+		\item Conducted regular training sessions on C programming and competitive programming for undergraduate students.
+		\item Designed lecture materials, coding exercises, and problem-solving sessions covering algorithms, data structures, and problem-solving techniques.
+		\item Mentored students in programming fundamentals and competitive programming, fostering analytical thinking and coding proficiency.
+	\end{highlights}
+\end{twocolentry}
+	
+	\begin{twocolentry}{
+			\textit{Dhaka, Bangladesh\\July 2025 - August 2025}}
+		\textbf{Lab AR} | \textit{\textbf{Software Engineering Intern}}
+		\begin{highlights}
+			\item Led a team project to develop a web-based Property Management System.
+			\item Contributed to backend development using Laravel (PHP) and collaborated on feature implementation.
+		\end{highlights}
+	\end{twocolentry}
+	
+	
+	
+	
+	
+	
+	\section{EDUCATION}
+	
+	\begin{twocolentry}{
+			\textit{Natore, Bangladesh\\2022 – 2026}}
+		\textbf{Bangladesh Army University of Engineering \& Technology (BAUET)}
+		
+		\textit{B.Sc in Computer Science and Engineering | CGPA: 3.82/4.0 | Merit Position: 3rd}
+	\end{twocolentry}
+	
+	\vspace{0.10 cm}
+	\begin{onecolentry}
+\textit{Thesis Title:} Biology-Informed Recurrent Neural Networks for Longitudinal Hippocampal Atrophy Forecasting in Alzheimer’s Disease
+	\end{onecolentry}
+	
+	\begin{twocolentry}{
+			\textit{Khulna, Bangladesh\\2019 – 2021}}
+		\textbf{Govt. Majid Memorial City College}
+		
+		\textit{Higher Secondary School Certificate | GPA: 5.0/5.0}
+	\end{twocolentry}
+	
+	
+	\section{PUBLICATIONS}
+	
+	\subsection{Conference Publications}
+	
+	\begin{twocolentry}{\textit{December 2025}}
+		\textbf{Quantum-Resistant FOTA: End-to-End Decentralized Firmware Updates for IoT Using Blockchain and CRYSTALS-Dilithium}
+	\end{twocolentry}
+	
+	\begin{onecolentry}
+		{\small \textbf{Ratul Hasan}, Md. Momenul Haque, Redoanul Haque, Yousuf Oley, and Ruhani Akter. \textit{Proceedings of the 12th International Conference on Next Generation Computing, Communication, Systems and Security (NSysS '25)}. ACM, New York, NY, USA, 110--114. \href{https://doi.org/10.1145/3777555.3777569}{doi.org/10.1145/3777555.3777569}}
+	\end{onecolentry}
+	
+	\vspace{0.2 cm}
+	
+	\begin{twocolentry}{\textit{Expected 2026}}
+		\textbf{A Gas-Optimized Blockchain Framework for Scalable Document Verification Using Dynamic Access Control and IPFS}
+	\end{twocolentry}
+	
+	\begin{onecolentry}
+		{\small \textbf{Ratul Hasan}, Samiha Farjana, Yousuf Oley, Md. Ohiduzaman Pranto, and Md Arik Rayhan. Accepted to the \textit{International Conference on Power, Electronics, Communications, Computing, and Intelligent Infrastructure (PECCII 2026)}. To be published in IEEE Proceedings.}
+	\end{onecolentry}
+	\vspace{0.2 cm}
+	
+	\begin{twocolentry}{\textit{Expected 2026}}
+		\textbf{SplitSafe Ultra: A Moving-Target Defense Framework for Entropy-Aware Encrypted File Persistence on IPFS}
+	\end{twocolentry}
+	
+	\begin{onecolentry}
+		{\small Md. Ahnaf Muhaimin, \textbf{Ratul Hasan}, Yousuf Oley, Samiha Farjana, Bristi Rani Roy, Subrata Kumer Paul, and Md. Ekramul Hamid. Accepted to the \textit{5th IEEE International Conference on Signal Processing, Information, Communication and Systems (SPICSCON 2026)}. To be published in IEEE Proceedings.}
+	\end{onecolentry}
+	\vspace{0.2 cm}
+	
+	\begin{twocolentry}{\textit{Expected 2026}}
+		\textbf{ActiVisionNet-Fusion: A Dual-Stream Explainable Deep Learning Framework for Driver Drowsiness Detection}
+	\end{twocolentry}
+	
+	\begin{onecolentry}
+		{\small Nasim Ahmed, \textbf{Ratul Hasan}, Subrata Kumer Paul, Dewan Nafiul Islam Noor, Md. Momenul Haque, and Md. Ekramul Hamid. Accepted to the \textit{5th IEEE International Conference on Signal Processing, Information, Communication and Systems (SPICSCON 2026)}. To be published in IEEE Proceedings.}
+	\end{onecolentry}
+	
+	\subsection{Journal Publications}
+	
+	\begin{twocolentry}{\textit{Under Review}}
+		\textbf{BI-RNN: Biology-Informed Recurrent Neural Networks for Longitudinal Hippocampal Atrophy Forecasting in Alzheimer’s Disease}
+	\end{twocolentry}
+	
+	\begin{onecolentry}
+		{\small \textbf{Ratul Hasan}, Md. Momenul Haque, Ananya Sarker. Under review in \textit{Nature Scientific Reports}, Submission Date: May 2026.}
+	\end{onecolentry}
+	
+	
+	
+	\section{PROJECTS}
+	
+	
+	
+	\begin{twocolentry}{
+			
+			
+			\textit{\href{https://github.com/ratulhasan001/LedgerSeal}{Github}}}
+		\textbf{LedgerSeal: A Blockchain Based Document Verification Framework using Dynamic Access Control and IPFS}
+	\end{twocolentry}
+	
+	\vspace{0.10 cm}
+	\begin{onecolentry}
+		\begin{highlights}
+			\item Developed a decentralized application (DApp) for constant-time document verification with dynamic access control on IPFS using a public blockchain.
+			\item Tools Used: React JS, Anvil EVM, Foundry, Metamask, Pinata IPFS
+		\end{highlights}
+	\end{onecolentry}
+	
+	
+	\vspace{0.4 cm}
+	
+	\begin{twocolentry}{
+			
+			
+			\textit{\href{https://github.com/ratulhasan001/BAUET_archive_project}{Github}}}
+		\textbf{BAUET Project \& Thesis Archive}
+	\end{twocolentry}
+	
+	\vspace{0.10 cm}
+	\begin{onecolentry}
+		\begin{highlights}
+			\item Developed a repository website using Django(Both MVT \& REST) where theses and projects of BAUET are represented
+			\item Tools Used: HTML, Tailwind CSS, JavaScript, Django, PostgreSQL
+		\end{highlights}
+	\end{onecolentry}
+	
+	
+	
+	
+	
+	\section{ACHIEVEMENTS \& CO-CURRICULAR ACTIVITIES}
+	
+	\subsection{Programming Contests}
+	
+	\begin{onecolentry}
+		\begin{highlights}
+			\item 1X ICPC Regionalist (Team: BAUET\_Rong\_Answer)
+			\item 1X National Collegiate Programming Contest by JU (Rank: 149, Team: BAUET\_PARADIGM)
+			\item 2X Inter University Programming Contest (Best Rank: 45 at IUT, Team: BAUET\_Twisted\_Minds)
+			\item Ranked 10th in Independence Day Programming Contest by Military Institute of Science \& Technology
+			\item 1X Champion, 1X 2nd runners-up in Intra University Programming Contest (Team)
+			\item 1X Runners-up in Intra University Programming Contest (Solo)
+			
+		\end{highlights}
+	\end{onecolentry}
+	
+	
+	\subsection{Others}
+	
+	\begin{onecolentry}
+		\begin{highlights}
+			\item 1X 1st Runners Up in Intra University Three Minutes Thesis Presentation
+		\end{highlights}
+	\end{onecolentry}
+	
+	\subsection{Online Judges}
+	
+	\begin{onecolentry}
+		\begin{highlights}
+			\item Codeforces: Max Rating 1650 (Expert) \hfill \href{https://codeforces.com/profile/Ratul_Hasan}{\textbf{Ratul\_Hasan}}
+			\item Codechef: Max Rating 1676 (3 Star) \hfill \href{https://www.codechef.com/users/ratulhasan2108}{\textbf{ratulhasan2108}}
+			\item Leetcode: Solved more than 50+ problems \hfill \href{https://leetcode.com/u/ratulhasan001/}{\textbf{ratulhasan001}}
+			\item Solved more than 1000+ problems across various online judges
+			
+			
+			
+			
+			
+		\end{highlights} 
+		
+	\end{onecolentry}
+	
+	
+	
+	
+	
+	\section{TECHNICAL SKILLS}
+	
+	
+	
+	
+	\begin{onecolentry}
+		\textbf{Languages:} C, C++, Python, JavaScript, SQL ||  \textbf{Frameworks:} Django, REST, Foundry, Laravel
+	\end{onecolentry}
+	
+	\begin{onecolentry}
+		\textbf{Project Management:} Git, Github || \textbf{Database:} MySQL, PostgreSQL
+	\end{onecolentry}
+	
+	
+	\begin{onecolentry}
+		\textbf{Technologies:} Machine Learning, Computer Vision, Backend Development, Blockchain
+	\end{onecolentry}
+	
+	
+	
+	
+	
+\section{VOLUNTEERING \& LEADERSHIP EXPERIENCE}
+
+\begin{onecolentry}
+	\begin{highlights}
+		\item President, BAUET Computer Society  (Advanced through five executive leadership positions)
+		\item Problem Setter, Intra-University Programming Contest, BAUET
+		\item Officer of Documentation, Hult Prize at BAUET
+	\end{highlights}
+\end{onecolentry}
+
+	
+	\section{REFERENCES}
+	
+	\begin{twocolentry}{}
+		\textbf{Prof. Mohammed Golam Sarwar Bhuyan} \\
+		Professor \& Dean, Faculty of Electrical \& Computer Engineering \\
+		Bangladesh Army University of Engineering \& Technology (BAUET) \\
+		Natore, Bangladesh \\
+		Email: csesarwar@gmail.com \\
+		Phone: +8801708503574
+	\end{twocolentry}
+	
+	\vspace{0.2cm}
+	
+	\begin{twocolentry}{}
+		\textbf{Ananya Sarker} \\
+		Associate Professor \& Head \\
+		Department of Computer Science \& Engineering \\
+		Bangladesh Army University of Engineering \& Technology (BAUET) \\
+		Natore, Bangladesh \\
+		Email: ananya.ruet@gmail.com\\
+		Phone: +8801739166530
+	\end{twocolentry}
+	
+	
+	
+	
+\end{document}
